@@ -34,12 +34,6 @@ def main():
         try_msg = bot.reply_to(message=up_msg, text='Пытаюсь добавить...')
         up_datetime = datetime.fromtimestamp(up_msg.date)
 
-        up_date = up_datetime.date()
-        up_time = up_datetime.time()
-
-        up_date = str(up_date)
-        up_time = round(up_time.hour + up_time.minute/60, 1)
-
         success = notion_api.up(user_id, up_datetime)
         if not success:
             bot.delete_message(up_msg.chat.id, try_msg.id)
@@ -59,8 +53,8 @@ def main():
 
 
     bot.add_custom_filter(IsAllowedUserFilter())
-
     bot.polling(none_stop=True, interval=0, skip_pending=True)
+    print('started!')
     # post_sleep()
 
 
