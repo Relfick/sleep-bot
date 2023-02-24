@@ -1,0 +1,5 @@
+BOT_TOKEN = 'secret'
+NOTION_TOKEN = 'secret'
+NOTION_DATABASE_ID = 'secret'
+ALLOWED_USERS = []
+ALLOWED_CHATS = []
