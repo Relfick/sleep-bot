@@ -5,6 +5,47 @@ import pandas as pd
 database_id = config.NOTION_DATABASE_ID
 notion_token = config.NOTION_TOKEN
 
+default_date = '2030-01-01'
+
+properties = {
+    'Спал (МАКС)': {
+        'number': None
+    },
+    'Встал в (РОМА)': {
+        'number': None
+    },
+    'Лег в (МАКС)': {
+        'number': None
+    },
+    'Комментарий': {
+        'rich_text': []
+    },
+    'БЕЗ МАТА (МАКСИМ)': {
+        'checkbox': False
+    },
+    'БЕЗ МАТА (РОМА)': {
+        'checkbox': False
+    },
+    'Встал в (МАКС)': {
+        'number': None
+    },
+    'Лег в (РОМА)': {
+        'number': None
+    },
+    'Спал (РОМА)': {
+        'number': None
+    },
+    'Дата': {
+        'date': {
+            'start': default_date,
+            'end': None
+        }
+    },
+    'title': {
+        'title': []
+    }
+}
+
 
 def get_sleep():
     def get_row_value(d: dict) -> str:
@@ -16,12 +57,12 @@ def get_sleep():
 
         return res
 
-
     url = f'https://api.notion.com/v1/databases/{database_id}/query'
-    r = requests.post(url, headers={
+    headers = {
         'Authorization': f'Bearer {notion_token}',
         'Notion-Version': '2021-08-16'
-    })
+    }
+    r = requests.post(url, headers=headers)
 
     result = r.json()['results']
     rows = [row['properties'] for row in result]
@@ -72,7 +113,7 @@ def post_sleep():
             },
             'Дата': {
                 'date': {
-                    'start': '2023-02-26',
+                    'start': '2023-03-26',
                     'end': None
                 }
             },
