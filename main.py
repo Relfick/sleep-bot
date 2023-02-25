@@ -55,8 +55,6 @@ def main():
     bot.add_custom_filter(IsAllowedUserFilter())
     bot.polling(none_stop=True, interval=0, skip_pending=True)
     print('started!')
-    # post_sleep()
-
 
 
 main()
