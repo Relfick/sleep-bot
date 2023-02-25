@@ -9,11 +9,11 @@ database_id = config.NOTION_DATABASE_ID
 notion_token = config.NOTION_TOKEN
 base_url = 'https://api.notion.com/v1/pages'
 base_headers = {
-        'accept': 'application/json',
-        'content-type': 'application/json',
-        'Authorization': f'Bearer {notion_token}',
-        'Notion-Version': '2022-06-28'
-    }
+    'accept': 'application/json',
+    'content-type': 'application/json',
+    'Authorization': f'Bearer {notion_token}',
+    'Notion-Version': '2022-06-28'
+}
 default_date = '2030-01-01'
 
 
@@ -48,6 +48,7 @@ def get_sleep():
     # return data
 
     return result
+
 
 def get_new_up_props(last_row, user, up_date, up_time):
     props = properties.copy()
@@ -108,6 +109,11 @@ def up(user_id: int, up_datetime: datetime):
     last_row_date = last_2_rows[0]['properties']['Дата']['date']['start']
 
     if last_row_date == up_date:
+        # Юзер сегодня уже записал время подъема / кол-во часов сна
+        if last_2_rows[0]['properties'][f'Встал в ({user})']['number'] is not None or \
+                last_2_rows[0]['properties'][f'Спал ({user})']['number'] is not None:
+            return False
+
         # Юзер проснулся вторым
         payload = get_updated_up_props(last_2_rows, user, up_date, up_time)
 
@@ -123,7 +129,6 @@ def up(user_id: int, up_datetime: datetime):
     else:
         # Ошибка. Последняя дата - не сегодня и не вчера, значит бота давно не юзали
         return False
-
 
     result = requests.request(method=method, url=url, headers=headers, json=payload)
 
